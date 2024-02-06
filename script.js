@@ -8,6 +8,8 @@ const pixelCountY = 20;
 const pixelSizeX = screenSizeX/pixelCountX;
 const pixelSizeY = screenSizeY/pixelCountY;
 
+const gameClock = 500
+
 document.addEventListener("keydown",changeDirectionHandler)
 
 function changeDirectionHandler(e){
@@ -120,15 +122,15 @@ var snake = {
     },
     reset(){
         this.pieces = [{x:3,y:0}, {x:2, y:0},{x:1 , y:0}]
-    }    
+    }
     
 }
 var food = {
-    x: Math.round((Math.random() * 100)%pixelCountX)-1,
-    y:Math.round((Math.random()*100)%pixelCountY)-1,
+    x: Math.round((Math.random() * 100)%pixelCountX),
+    y:Math.round((Math.random()*100)%pixelCountY),
     update(){
-    this.x =Math.round((Math.random() * 100)%pixelCountX) -1,
-    this.y = Math.round((Math.random()*100)%pixelCountY) -1
+    this.x =Math.round((Math.random() * 100)%pixelCountX) ,
+    this.y = Math.round((Math.random()*100)%pixelCountY) 
     }
 }
 
@@ -140,11 +142,15 @@ function render(Snake,Food, ScreenContext){
     Snake.pieces.forEach(coord => {
         ScreenContext.fillStyle = "#ff22ff"
         ScreenContext.fillRect(coord.x * pixelSizeX, coord.y * pixelSizeY,pixelSizeX, pixelSizeY);
+        ScreenContext.fillStyle = "#2d2d2d"
+        ScreenContext.strokeRect(coord.x * pixelSizeX, coord.y * pixelSizeY,pixelSizeX, pixelSizeY);
     });
 
     ScreenContext.fillStyle = "#ff2200"
     ScreenContext.fillRect(Food.x* pixelSizeX, Food.y * pixelSizeY, pixelSizeX, pixelSizeY)
-    
+    ScreenContext.fillStyle = "#1d1d1d"
+    ScreenContext.fillText(`${Snake.pieces.length - 3} Pontos `, 10, 20, 200 )
+
 }
 
 function gameMain(){
@@ -168,14 +174,16 @@ function gameMain(){
         console.log("outOfScreen")
         clearInterval(gameLogic)
         clearInterval(renderingInterval)
-        menu()
+        gameReset(snake.pieces.length - 3)
+        snake.reset()
     }
     //console.log("timeout")
-}, 500);
+}, gameClock);
 
 }
 
 function startGame(e){
+<<<<<<< Updated upstream
     console.log(e)
     btnXstart = screenSizeX/2 -60 
     btnXend = screenSizeX/2 + 60
@@ -183,8 +191,45 @@ function startGame(e){
     btnYend = screenSizeY/2 + 20
     if(e.clientX > btnXstart && e.clientX < btnXend && e.clientY > btnYStart && e.clientY < btnYend ){
         console.log("btnClicked")
+=======
+    //console.log(e)
+    btnXstart = (screenSizeX/2) -60 
+    btnXend = (screenSizeX/2) + 60
+    btnYStart = (screenSizeY/2) - 20
+    btnYend = (screenSizeY/2) + 20
+    if(e.clientX > btnXstart && e.clientX < btnXend && e.clientY > btnYStart && e.clientY < btnYend ){
+        //console.log("btnClicked")
+>>>>>>> Stashed changes
         gameMain()
     }
+}
+
+function gameReset(Score){
+
+    let currentRecord = localStorage.getItem("currentRecord")
+    if(!currentRecord){
+        currentRecord = 0;
+    }
+
+    if(Score > currentRecord){
+        currentRecord = Score;
+        localStorage.setItem("currentRecord",currentRecord)
+    }
+    screenCtx.fillStyle = "#67f867"
+    screenCtx.fillRect(0,0, screenSizeX, screenSizeY)
+    screenCtx.fillStyle = "#008f05"
+    screenCtx.fillRect(screenSizeX/2 - 60, screenSizeY/2 +5, 120,40)
+
+    screenCtx.fillStyle = "#8f0a0a"
+    screenCtx.font  = "28px sans-serif"
+    screenCtx.fillText("Game Over",(screenSizeX/2)-75, (screenSizeY/2)-100, 220)
+
+    screenCtx.fillStyle = "#000000"
+    screenCtx.font  = "22px sans-serif"
+    screenCtx.fillText(`Pontuação final: ${Score}`,(screenSizeX/2)-90, (screenSizeY/2)-50, 220)
+    screenCtx.fillText(`Recorde: ${currentRecord}`,(screenSizeX/2)-90, (screenSizeY/2)-20, 220)
+    screenCtx.fillText("Reiniciar",(screenSizeX/2)-45, (screenSizeY/2)+35, 220)
+    canvas.addEventListener("click", startGame)
 }
 
 function menu(){
@@ -192,7 +237,9 @@ function menu(){
     screenCtx.fillRect(0,0, screenSizeX, screenSizeY)
     screenCtx.fillStyle = "#008f05"
     screenCtx.fillRect(screenSizeX/2 - 60, screenSizeY/2 -20, 120,40)
-
+    screenCtx.fillStyle = "#000000"
+    screenCtx.font  = "22px sans-serif"
+    screenCtx.fillText("Start",(screenSizeX/2)-25, (screenSizeY/2)+5, 220)
     canvas.addEventListener("click", startGame)
 }
 
