@@ -42,7 +42,7 @@ function changeDirectionHandler(e){
 }
 
 var snake = {
-    pieces : [{x:3,y:0}, {x:2, y:0},{x:1 , y:0}],
+    pieces : [{x:3,y:2}, {x:2, y:2},{x:1 , y:2}],
     direction: {x: 1, y: 0},
     move(a){
 
@@ -121,13 +121,14 @@ var snake = {
         }
     },
     reset(){
-        this.pieces = [{x:3,y:0}, {x:2, y:0},{x:1 , y:0}]
+        this.pieces = [{x:3,y:2}, {x:2, y:2},{x:1 , y:2}]
+        this.setDirection("right")
     }
     
 }
 var food = {
-    x: Math.round((Math.random() * 100)%pixelCountX),
-    y:Math.round((Math.random()*100)%pixelCountY),
+    x: Math.round((Math.random() * 100)%(pixelCountX-1)),
+    y:Math.round((Math.random()*100)%(pixelCountY-1)),
     update(){
     this.x =Math.round((Math.random() * 100)%pixelCountX) ,
     this.y = Math.round((Math.random()*100)%pixelCountY) 
@@ -168,7 +169,8 @@ function gameMain(){
         console.log("bateu em si mesmo")
         clearInterval(gameLogic)
         clearInterval(renderingInterval)
-        menu()
+        gameReset(snake.pieces.length - 3)
+        snake.reset()
     }
     if(snake.detectBorderCollision(0,0,pixelCountX, pixelCountY)){
         console.log("outOfScreen")
@@ -208,17 +210,17 @@ function gameReset(Score){
     screenCtx.fillStyle = "#67f867"
     screenCtx.fillRect(0,0, screenSizeX, screenSizeY)
     screenCtx.fillStyle = "#008f05"
-    screenCtx.fillRect(screenSizeX/2 - 60, screenSizeY/2 +5, 120,40)
+    screenCtx.fillRect(screenSizeX/2 - 60, screenSizeY/2 -20, 120,40)
 
     screenCtx.fillStyle = "#8f0a0a"
     screenCtx.font  = "28px sans-serif"
-    screenCtx.fillText("Game Over",(screenSizeX/2)-75, (screenSizeY/2)-100, 220)
+    screenCtx.fillText("Game Over",(screenSizeX/2)-75, (screenSizeY/2)-120, 220)
 
     screenCtx.fillStyle = "#000000"
     screenCtx.font  = "22px sans-serif"
-    screenCtx.fillText(`Pontuação final: ${Score}`,(screenSizeX/2)-90, (screenSizeY/2)-50, 220)
-    screenCtx.fillText(`Recorde: ${currentRecord}`,(screenSizeX/2)-90, (screenSizeY/2)-20, 220)
-    screenCtx.fillText("Reiniciar",(screenSizeX/2)-45, (screenSizeY/2)+35, 220)
+    screenCtx.fillText(`Pontuação final: ${Score}`,(screenSizeX/2)-90, (screenSizeY/2)-80, 220)
+    screenCtx.fillText(`Recorde: ${currentRecord}`,(screenSizeX/2)-90, (screenSizeY/2)-40, 220)
+    screenCtx.fillText("Reiniciar",(screenSizeX/2)-45, (screenSizeY/2), 220)
     canvas.addEventListener("click", startGame)
 }
 
