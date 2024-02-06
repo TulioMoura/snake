@@ -183,15 +183,6 @@ function gameMain(){
 }
 
 function startGame(e){
-<<<<<<< Updated upstream
-    console.log(e)
-    btnXstart = screenSizeX/2 -60 
-    btnXend = screenSizeX/2 + 60
-    btnYStart = screenSizeY/2 - 20
-    btnYend = screenSizeY/2 + 20
-    if(e.clientX > btnXstart && e.clientX < btnXend && e.clientY > btnYStart && e.clientY < btnYend ){
-        console.log("btnClicked")
-=======
     //console.log(e)
     btnXstart = (screenSizeX/2) -60 
     btnXend = (screenSizeX/2) + 60
@@ -199,7 +190,6 @@ function startGame(e){
     btnYend = (screenSizeY/2) + 20
     if(e.clientX > btnXstart && e.clientX < btnXend && e.clientY > btnYStart && e.clientY < btnYend ){
         //console.log("btnClicked")
->>>>>>> Stashed changes
         gameMain()
     }
 }
